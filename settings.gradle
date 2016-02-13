@@ -1,0 +1,4 @@
+rootProject.name = 'cloudcapstone'
+include 'task2'
+include 'task1'
+
