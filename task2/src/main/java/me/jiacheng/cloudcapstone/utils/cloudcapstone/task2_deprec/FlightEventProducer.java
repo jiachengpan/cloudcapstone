@@ -1,4 +1,4 @@
-package me.jiacheng.cloudcapstone.utils.cloudcapstone.task2;
+package me.jiacheng.cloudcapstone.utils.cloudcapstone.task2_deprec;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.DirectoryScanner;

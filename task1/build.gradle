@@ -38,7 +38,7 @@ def runTest(testclass) {
 
         args = [
                 '../build/libs/' + rootProject.name + '-' + version + '.jar',
-                'me.jiacheng.cloudcapstone.utils.cloudcapstone.tasks.' + testclass,
+                'me.jiacheng.cloudcapstone.utils.cloudcapstone.task2.' + testclass,
                 'input/aviation/*/*/*.csv',
                 'output'
         ]

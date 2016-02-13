@@ -1,6 +1,6 @@
 group 'cloudcapstone'
 
-apply plugin: 'java'
+apply plugin: 'scala'
 
 version '1.0'
 
@@ -9,23 +9,43 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.apache.spark', name: 'spark-core_2.10', version: '1.6.0'
-    compile group: 'org.apache.spark', name: 'spark-streaming_2.10', version: '1.6.0'
-    compile group: 'org.apache.spark', name: 'spark-streaming-kafka_2.10', version: '1.6.0'
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.10.5'
+
+    compile group: 'org.apache.spark', name: 'spark-core_2.10', version: '1.5.0'
+    compile group: 'org.apache.spark', name: 'spark-streaming_2.10', version: '1.5.0'
+    compile group: 'org.apache.spark', name: 'spark-streaming-kafka_2.10', version: '1.5.0'
+    compile group: 'com.datastax.spark', name: 'spark-cassandra-connector_2.10', version: '1.5.0-M3'
 
     compile group: 'org.apache.kafka', name: 'kafka_2.10', version: '0.9.+'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
     compile group: 'org.apache.ant', name: 'ant', version: '1.9.+'
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.2'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
+task copylib(type: Copy) {
+    into 'lib'
+    from configurations.testRuntime
+}
+
 task runTests(type: Exec) {
     dependsOn 'jar'
-    workingDir './workspace'
+    workingDir '../workspace'
 
     commandLine '/opt/spark-1.6.0-bin-hadoop2.6/bin/spark-submit',
             '--driver-class-path', sourceSets.main.runtimeClasspath.asPath,
-            '--class', 'me.jiacheng.cloudcapstone.utils.cloudcapstone.task2.TopCarriersByDepdelay',
-            '../build/libs/' + rootProject.name + '-' + version + '.jar'
+            '--class', 'me.jiacheng.cloudcapstone.task2.SuitableRoutes',
+            '../task2/build/libs/' + rootProject.name + '-' + version + '.jar',
+            'localhost:62181',      // zookeeper quorum
+            'consumer-group',       // consumer group
+            'test',                 // topic
+            '1'                     // number of threads
+
+}
+
+
+task runProg(type: JavaExec) {
+    main 'Hello'
+    classpath sourceSets.main.runtimeClasspath
 }
